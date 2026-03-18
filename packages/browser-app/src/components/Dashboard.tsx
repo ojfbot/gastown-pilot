@@ -1,5 +1,6 @@
-import React from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Provider } from 'react-redux';
+import { store } from '../store/store';
 import DashboardContent from './DashboardContent';
 
 const queryClient = new QueryClient({
@@ -18,16 +19,17 @@ interface DashboardProps {
 /**
  * MF export — mounted by shell via Module Federation.
  *
- * Double-Provider pattern: wraps DashboardContent in QueryClientProvider.
+ * Double-Provider pattern: wraps DashboardContent in both Redux Provider
+ * (for threads/chat state) and QueryClientProvider (for server data).
  * In shell mode, the shell's Redux Provider is already above this component;
- * QueryClientProvider is additive and does not conflict.
- *
- * shellMode={true} suppresses the app title heading and activates flex-height CSS.
+ * the inner Provider wins for DashboardContent's own slices.
  */
 export default function Dashboard({ shellMode = false }: DashboardProps) {
   return (
-    <QueryClientProvider client={queryClient}>
-      <DashboardContent shellMode={shellMode} />
-    </QueryClientProvider>
+    <Provider store={store}>
+      <QueryClientProvider client={queryClient}>
+        <DashboardContent shellMode={shellMode} />
+      </QueryClientProvider>
+    </Provider>
   );
 }
