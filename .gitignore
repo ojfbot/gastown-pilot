@@ -11,3 +11,9 @@ env.json
 .beads/
 .wasteland/
 /tmp/
+
+# Symlinked from core via install-agents.sh
+.claude/
+decisions/
+domain-knowledge/
+personal-knowledge/
