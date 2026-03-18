@@ -1,0 +1,310 @@
+/* ── Side panel shell — mirrors lean-canvas CanvasSidePanel exactly ── */
+
+.gt-side-panel {
+  position: fixed !important;
+  right: 1rem !important;
+  top: calc(48px + 0.5rem) !important;
+  height: calc(100vh - 48px - 1rem) !important;
+  width: 320px !important;
+  display: flex;
+  flex-direction: column;
+  background: var(--cds-layer-01) !important;
+  border-left: 1px solid var(--cds-border-subtle) !important;
+  border-radius: 0 !important;
+  z-index: 999 !important;
+  transform: translateX(calc(100% + 1rem));
+  visibility: hidden;
+  transition: transform 0.3s ease, visibility 0s 0.3s !important;
+  box-shadow: none;
+}
+
+.gt-side-panel.expanded {
+  transform: translateX(0) !important;
+  visibility: visible !important;
+  transition: transform 0.3s ease, visibility 0s !important;
+  box-shadow: -4px 0 12px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* ── Tab bar ─────────────────────────────────────────────────── */
+
+.gt-panel-tabs {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--cds-border-subtle);
+  background: var(--cds-layer-02);
+  flex-shrink: 0;
+}
+
+.gt-panel-tab {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.75rem 1rem;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  font-size: 0.875rem;
+  color: var(--cds-text-secondary);
+  transition: color 0.15s ease, border-color 0.15s ease;
+  white-space: nowrap;
+}
+
+.gt-panel-tab:hover {
+  color: var(--cds-text-primary);
+  background: var(--cds-layer-accent-01);
+}
+
+.gt-panel-tab.active {
+  color: var(--cds-interactive-01);
+  border-bottom-color: var(--cds-interactive-01);
+  font-weight: 500;
+}
+
+.gt-panel-tabs-spacer {
+  flex: 1;
+}
+
+.gt-panel-close {
+  margin-right: 0.25rem;
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+/* ── Sessions panel ──────────────────────────────────────────── */
+
+.gt-panel-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.gt-panel-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--cds-text-secondary);
+  border-bottom: 1px solid var(--cds-border-subtle-00);
+}
+
+.gt-panel-icon-btn {
+  padding: 0.375rem;
+  background: transparent;
+  border: 1px solid var(--cds-border-subtle);
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+}
+
+.gt-panel-icon-btn:hover {
+  background: var(--cds-layer-hover);
+}
+
+.gt-panel-icon-btn--primary {
+  background: var(--cds-button-primary);
+  color: var(--cds-text-on-color);
+  border-color: var(--cds-button-primary);
+}
+
+.gt-panel-icon-btn--primary:hover {
+  background: var(--cds-button-primary-hover);
+}
+
+.gt-sessions-list {
+  list-style: none;
+  margin: 0;
+  padding: 0.5rem 0;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.gt-session-item {
+  display: flex;
+  align-items: center;
+  padding: 0.125rem 0.75rem;
+  gap: 0.25rem;
+}
+
+.gt-session-item.active .gt-session-item-name {
+  color: var(--cds-interactive-01);
+  font-weight: 500;
+}
+
+.gt-session-item-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  padding: 0.5rem 0.25rem;
+  cursor: pointer;
+  border-radius: 4px;
+  min-width: 0;
+}
+
+.gt-session-item-content:hover {
+  background: var(--cds-layer-accent-01);
+}
+
+.gt-session-item-name {
+  font-size: 0.875rem;
+  color: var(--cds-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.gt-session-item-date {
+  font-size: 0.75rem;
+  color: var(--cds-text-placeholder);
+}
+
+.gt-session-item-delete {
+  padding: 0.25rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  opacity: 0;
+  flex-shrink: 0;
+  transition: opacity 0.15s;
+  display: flex;
+  align-items: center;
+  color: var(--cds-text-secondary);
+}
+
+.gt-session-item:hover .gt-session-item-delete {
+  opacity: 1;
+}
+
+.gt-session-item-delete:hover {
+  color: var(--cds-support-error);
+}
+
+.gt-session-rename-input {
+  flex: 1;
+  background: var(--cds-field-01);
+  border: 1px solid var(--cds-focus);
+  border-radius: 2px;
+  padding: 0.375rem 0.5rem;
+  font-size: 0.875rem;
+  color: var(--cds-text-primary);
+  outline: none;
+}
+
+.gt-panel-hint {
+  padding: 0.5rem 1rem 1rem;
+  font-size: 0.75rem;
+  color: var(--cds-text-placeholder);
+  line-height: 1.4;
+}
+
+/* ── Chat panel ──────────────────────────────────────────────── */
+
+.gt-chat-panel {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.gt-chat-context-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.75rem;
+  color: var(--cds-text-secondary);
+  background: var(--cds-layer-02);
+  border-bottom: 1px solid var(--cds-border-subtle-00);
+  flex-shrink: 0;
+}
+
+.gt-chat-context-bar strong {
+  color: var(--cds-text-primary);
+}
+
+.gt-chat-messages {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.gt-chat-empty {
+  color: var(--cds-text-secondary);
+  font-size: 0.875rem;
+  text-align: center;
+  padding: 2rem 1rem;
+  line-height: 1.5;
+}
+
+.gt-msg-tile {
+  padding: 0.625rem 0.75rem !important;
+  border-radius: 6px !important;
+}
+
+.gt-msg-tile.user {
+  background-color: var(--cds-layer-02) !important;
+  border-left: 2px solid var(--cds-interactive-01);
+}
+
+.gt-msg-tile.assistant {
+  background-color: var(--cds-layer-01) !important;
+  border-left: 2px solid var(--cds-support-04);
+}
+
+.gt-msg-tile.streaming {
+  border-left-color: var(--cds-interactive-01);
+}
+
+.gt-msg-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: var(--cds-text-secondary);
+  margin-bottom: 0.375rem;
+}
+
+.gt-msg-streaming {
+  font-style: italic;
+}
+
+.gt-msg-content {
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--cds-text-primary);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.gt-chat-input-area {
+  border-top: 1px solid var(--cds-border-subtle);
+  padding: 0.75rem;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.gt-chat-textarea textarea {
+  font-size: 0.875rem !important;
+  resize: none;
+}
+
+.gt-chat-send-row {
+  display: flex;
+  justify-content: flex-end;
+}
