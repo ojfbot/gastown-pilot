@@ -17,3 +17,4 @@ env.json
 decisions/
 domain-knowledge/
 personal-knowledge/
+.vercel
