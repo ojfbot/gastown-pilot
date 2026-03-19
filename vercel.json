@@ -1,7 +1,7 @@
 {
   "buildCommand": "pnpm --filter @ojfbot/gastown-pilot-browser-app build",
   "outputDirectory": "packages/browser-app/dist",
-  "installCommand": "pnpm install",
+  "installCommand": "pnpm install --filter @ojfbot/gastown-pilot-browser-app...",
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
   ],
