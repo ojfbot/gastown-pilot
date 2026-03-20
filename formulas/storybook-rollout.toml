@@ -1,0 +1,46 @@
+formula = "storybook-rollout"
+type = "workflow"
+version = 1
+description = "Roll out Storybook + visual regression infrastructure across a set of Frame OS repositories"
+
+[[steps]]
+id = "add-storybook-deps"
+title = "Add Storybook ~8.4.0 devDependencies to browser-app"
+needs = []
+acceptanceCriteria = ["@storybook/react installed", ".npmrc has public-hoist-pattern for storybook + carbon"]
+
+[[steps]]
+id = "write-config"
+title = "Create .storybook/main.ts and preview.tsx"
+needs = ["add-storybook-deps"]
+acceptanceCriteria = ["main.ts points to correct story globs", "preview.tsx wraps with Carbon Theme + QueryClient"]
+
+[[steps]]
+id = "write-stories"
+title = "Write stories for all major components"
+needs = ["write-config"]
+acceptanceCriteria = ["Every panel component has a .stories.tsx", "Each story has Loading, WithData, and Empty variants"]
+
+[[steps]]
+id = "verify-build"
+title = "Run build-storybook to verify all stories compile"
+needs = ["write-stories"]
+acceptanceCriteria = ["build-storybook exits 0", "No missing module errors"]
+
+[[steps]]
+id = "add-ci-gate"
+title = "Add Storybook build step to .github/workflows/ci.yml"
+needs = ["verify-build"]
+acceptanceCriteria = ["CI runs build-storybook", "Failure blocks merge"]
+
+[[steps]]
+id = "create-pr"
+title = "Create PR and verify CI passes"
+needs = ["add-ci-gate"]
+acceptanceCriteria = ["PR created with story screenshots", "CI green"]
+
+[[steps]]
+id = "visual-baseline"
+title = "Generate visual regression baselines with jest-image-snapshot"
+needs = ["create-pr"]
+acceptanceCriteria = ["Baseline screenshots committed", "0.01% failure threshold configured"]
