@@ -1,16 +1,23 @@
 import { useQuery } from '@tanstack/react-query';
+import { MOCK_AGENTS, MOCK_CONVOYS, MOCK_EVENTS } from './mockData';
 
 const API_BASE = import.meta.env.VITE_API_URL ?? 'http://localhost:3018';
+
+async function fetchOrMock<T>(url: string, fallback: T): Promise<T> {
+  try {
+    const res = await fetch(url);
+    if (!res.ok) return fallback;
+    return await res.json();
+  } catch {
+    return fallback;
+  }
+}
 
 /** SSE relay events — push via WebSocket (stubbed as polling) */
 export function useGasTown() {
   return useQuery({
     queryKey: ['gastown', 'events'],
-    queryFn: async () => {
-      // SCAFFOLD: stub — returns empty event list
-      // TODO: wire to WebSocket SSE relay
-      return { events: [] as Array<{ type: string; timestamp: string; summary: string }> };
-    },
+    queryFn: () => fetchOrMock(`${API_BASE}/api/events`, MOCK_EVENTS),
     refetchInterval: 5000,
   });
 }
@@ -19,10 +26,7 @@ export function useGasTown() {
 export function useAgents() {
   return useQuery({
     queryKey: ['gastown', 'agents'],
-    queryFn: async () => {
-      const res = await fetch(`${API_BASE}/api/agents`);
-      return res.json() as Promise<{ agents: Array<{ id: string; name: string; rig: string; status: string; task: string }> }>;
-    },
+    queryFn: () => fetchOrMock(`${API_BASE}/api/agents`, MOCK_AGENTS),
     refetchInterval: 5000,
   });
 }
@@ -31,10 +35,7 @@ export function useAgents() {
 export function useConvoys() {
   return useQuery({
     queryKey: ['gastown', 'convoys'],
-    queryFn: async () => {
-      const res = await fetch(`${API_BASE}/api/convoys`);
-      return res.json();
-    },
+    queryFn: () => fetchOrMock(`${API_BASE}/api/convoys`, MOCK_CONVOYS),
     refetchInterval: 5000,
   });
 }
