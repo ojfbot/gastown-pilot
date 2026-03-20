@@ -1,0 +1,34 @@
+formula = "deploy-demo"
+type = "workflow"
+version = 2
+description = "Deploy a Frame OS sub-app to Vercel — build, smoke test, set cache headers, verify MF remoteEntry.js loads"
+
+[[steps]]
+id = "build"
+title = "Build production artifacts"
+needs = []
+acceptanceCriteria = ["pnpm build exits 0", "dist/ contains remoteEntry.js", "No TypeScript errors"]
+
+[[steps]]
+id = "smoke-test"
+title = "Run smoke tests against built artifacts"
+needs = ["build"]
+acceptanceCriteria = ["All unit tests pass", "Storybook builds cleanly"]
+
+[[steps]]
+id = "verify-cache-headers"
+title = "Verify Vercel header rules for MF assets"
+needs = ["build"]
+acceptanceCriteria = ["remoteEntry.js → Cache-Control: no-store", "Hashed assets → immutable, max-age=31536000", "remoteEntry rule comes AFTER wildcard catch-all"]
+
+[[steps]]
+id = "deploy"
+title = "Deploy to Vercel with preview URL"
+needs = ["smoke-test", "verify-cache-headers"]
+acceptanceCriteria = ["Deploy succeeds", "Preview URL accessible", "remoteEntry.js returns 200"]
+
+[[steps]]
+id = "verify-shell-load"
+title = "Verify shell can load the MF remote from deployed URL"
+needs = ["deploy"]
+acceptanceCriteria = ["Shell loads Dashboard component without error", "Settings panel renders", "No duplicate Carbon instances"]

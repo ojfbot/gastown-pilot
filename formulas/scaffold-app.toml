@@ -1,0 +1,52 @@
+formula = "scaffold-app"
+type = "workflow"
+version = 1
+description = "Scaffold a new Frame OS application from a canonical template — creates monorepo structure, MF config, CI pipeline, and shell registration"
+
+[[steps]]
+id = "create-dirs"
+title = "Create monorepo directory structure"
+needs = []
+acceptanceCriteria = ["packages/browser-app exists", "packages/api exists", "packages/shared exists"]
+
+[[steps]]
+id = "gen-package-json"
+title = "Generate root + package-level package.json files"
+needs = ["create-dirs"]
+acceptanceCriteria = ["Valid JSON in all package.json", "pnpm workspace configured", "Port numbers assigned"]
+
+[[steps]]
+id = "write-tsconfig"
+title = "Write TypeScript configs extending base"
+needs = ["create-dirs"]
+acceptanceCriteria = ["tsconfig.base.json extends core pattern", "Per-package configs reference base"]
+
+[[steps]]
+id = "add-mf-config"
+title = "Configure Module Federation remote in vite.config.ts"
+needs = ["gen-package-json"]
+acceptanceCriteria = ["federation() plugin imported", "exposes ./Dashboard and ./Settings", "remoteEntry.js filename set"]
+
+[[steps]]
+id = "add-storybook"
+title = "Add Storybook ~8.4.0 with Carbon + React-Query decorators"
+needs = ["gen-package-json"]
+acceptanceCriteria = [".storybook/main.ts configured", ".storybook/preview.tsx with Carbon theme", "build-storybook script in package.json"]
+
+[[steps]]
+id = "add-ci"
+title = "Create GitHub Actions CI workflow with Storybook build gate"
+needs = ["add-storybook"]
+acceptanceCriteria = [".github/workflows/ci.yml exists", "Storybook build step included", "pnpm frozen-lockfile used"]
+
+[[steps]]
+id = "register-in-shell"
+title = "Wire into shell: APP_CONFIG, REMOTE_LOADERS, SETTINGS_LOADERS, vite remotes"
+needs = ["add-mf-config"]
+acceptanceCriteria = ["AppType union updated", "5 registration points wired", "domain-registry keywords added"]
+
+[[steps]]
+id = "install-deps"
+title = "pnpm install and verify build"
+needs = ["gen-package-json", "write-tsconfig", "add-mf-config"]
+acceptanceCriteria = ["pnpm install succeeds", "pnpm build exits 0", "pnpm build-storybook exits 0"]

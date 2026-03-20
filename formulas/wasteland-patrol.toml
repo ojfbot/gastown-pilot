@@ -1,0 +1,34 @@
+formula = "wasteland-patrol"
+type = "patrol"
+version = 1
+description = "Scan Wasteland Dolt database for stale wanted items, validate stamp integrity, and report federation health"
+
+[[steps]]
+id = "query-stale"
+title = "Query wanted_items older than 30 days with status 'open'"
+needs = []
+acceptanceCriteria = ["SQL query returns results or empty set", "Query completes within 5s"]
+
+[[steps]]
+id = "close-expired"
+title = "Auto-close wanted items past expiry threshold"
+needs = ["query-stale"]
+acceptanceCriteria = ["Status updated to 'archived'", "Dolt commit recorded with reason"]
+
+[[steps]]
+id = "validate-stamps"
+title = "Check stamp foreign keys — every stamp references a valid completion"
+needs = []
+acceptanceCriteria = ["No orphaned stamps found", "All completion_ids resolve to existing rows"]
+
+[[steps]]
+id = "check-sync"
+title = "Verify all registered towns synced within last 24h"
+needs = []
+acceptanceCriteria = ["No town > 24h since last sync", "Report stale towns if any"]
+
+[[steps]]
+id = "report"
+title = "Generate health report bead with findings"
+needs = ["close-expired", "validate-stamps", "check-sync"]
+acceptanceCriteria = ["Bead created with type 'patrol'", "Summary includes counts + any issues found"]

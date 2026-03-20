@@ -1,0 +1,28 @@
+formula = "wasteland-join"
+type = "expansion"
+version = 1
+description = "Join a Wasteland federation — fork Commons Dolt DB, register your rig handle, sync the Wanted Board"
+
+[[steps]]
+id = "fork-commons"
+title = "Fork Commons Dolt DB to your DoltHub org"
+needs = []
+acceptanceCriteria = ["Fork exists in DoltHub", "Accessible from gt CLI"]
+
+[[steps]]
+id = "clone-local"
+title = "Clone forked DB to .wasteland/ directory"
+needs = ["fork-commons"]
+acceptanceCriteria = [".wasteland/ directory exists", "Dolt history present", "Tables: towns, wanted_items, stamps, completions"]
+
+[[steps]]
+id = "register-town"
+title = "Register your rig handle in the towns table"
+needs = ["clone-local"]
+acceptanceCriteria = ["Row inserted into towns", "Commit pushed to DoltHub", "Trust tier defaults to 'registered'"]
+
+[[steps]]
+id = "initial-sync"
+title = "Pull latest Wanted Board and leaderboard from Commons"
+needs = ["register-town"]
+acceptanceCriteria = ["wanted_items table populated", "Sync completes within 30s", "Leaderboard visible in dashboard"]
