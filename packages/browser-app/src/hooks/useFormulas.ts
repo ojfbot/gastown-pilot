@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import type { FormulaDefinition } from '@ojfbot/gastown-pilot-shared';
+import { MOCK_FORMULAS } from './mockData';
 
 const API_BASE = import.meta.env.VITE_API_URL ?? 'http://localhost:3018';
 
@@ -8,8 +9,13 @@ export function useFormulas() {
   return useQuery({
     queryKey: ['gastown', 'formulas'],
     queryFn: async () => {
-      const res = await fetch(`${API_BASE}/api/formulas`);
-      return res.json() as Promise<{ formulas: FormulaDefinition[] }>;
+      try {
+        const res = await fetch(`${API_BASE}/api/formulas`);
+        if (!res.ok) return MOCK_FORMULAS;
+        return await res.json() as { formulas: FormulaDefinition[] };
+      } catch {
+        return MOCK_FORMULAS;
+      }
     },
     staleTime: 60_000,
   });

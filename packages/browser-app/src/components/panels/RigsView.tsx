@@ -5,13 +5,19 @@ const API_BASE = import.meta.env.VITE_API_URL ?? 'http://localhost:3018';
 
 import { useQuery } from '@tanstack/react-query';
 import type { RigHealth } from '@ojfbot/gastown-pilot-shared';
+import { MOCK_RIGS } from '../../hooks/mockData';
 
 function useRigs() {
   return useQuery({
     queryKey: ['gastown', 'rigs'],
     queryFn: async () => {
-      const res = await fetch(`${API_BASE}/api/rigs`);
-      return res.json() as Promise<{ rigs: RigHealth[] }>;
+      try {
+        const res = await fetch(`${API_BASE}/api/rigs`);
+        if (!res.ok) return MOCK_RIGS;
+        return await res.json() as { rigs: RigHealth[] };
+      } catch {
+        return MOCK_RIGS;
+      }
     },
   });
 }
