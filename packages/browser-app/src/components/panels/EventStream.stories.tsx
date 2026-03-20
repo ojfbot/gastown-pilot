@@ -27,8 +27,8 @@ type Story = StoryObj<typeof EventStream>
 export const Loading: Story = {}
 
 /**
- * With events — mock the fetch to return sample events.
- * Uses MSW or manual fetch mock in beforeEach.
+ * Rich event stream — shows full range of Gas Town event types
+ * during an active sprint morning.
  */
 export const WithEvents: Story = {
   decorators: [
@@ -36,11 +36,21 @@ export const WithEvents: Story = {
       const client = makeClient()
       client.setQueryData(['gastown', 'events'], {
         events: [
-          { type: 'convoy:start', timestamp: '2026-03-19T10:00:00Z', summary: 'Convoy "Sprint-6" started with 4 beads' },
-          { type: 'agent:spawn', timestamp: '2026-03-19T10:01:00Z', summary: 'Agent scaffold-worker spawned on rig ojfbot-frame' },
-          { type: 'bead:complete', timestamp: '2026-03-19T10:05:00Z', summary: 'Bead GT-042 "Add Storybook config" marked done' },
-          { type: 'convoy:merge', timestamp: '2026-03-19T10:12:00Z', summary: 'Convoy "Sprint-5" merged — 6/6 beads complete' },
-          { type: 'agent:stall', timestamp: '2026-03-19T10:15:00Z', summary: 'Agent test-runner stalled on rig purefoy — timeout 300s' },
+          { type: 'convoy:start', timestamp: '2026-03-20T09:00:00Z', summary: 'Convoy "Sprint-8: Gas Town mock data + formulas" started with 6 beads' },
+          { type: 'molecule:started', timestamp: '2026-03-20T09:00:30Z', summary: 'Molecule mol-gastown-mock-data poured from formula "storybook-rollout"' },
+          { type: 'agent:spawn', timestamp: '2026-03-20T09:01:00Z', summary: 'Agent ci-hardener spawned on rig ojfbot-frame' },
+          { type: 'hook:assigned', timestamp: '2026-03-20T09:02:00Z', summary: 'Hook GT-059 assigned to ci-hardener on ojfbot-frame' },
+          { type: 'bead:complete', timestamp: '2026-03-20T09:15:00Z', summary: 'GT-055 "ADR-0029 prop-only boundary" filed by scaffold-worker' },
+          { type: 'agent:stall', timestamp: '2026-03-20T09:22:00Z', summary: 'Agent doc-writer stalled on rig purefoy — waiting on scraper-main' },
+          { type: 'mail:sent', timestamp: '2026-03-20T09:25:00Z', summary: 'Mayor → doc-writer: "scraper-main ETA 5m — hold position"' },
+          { type: 'molecule:step_done', timestamp: '2026-03-20T09:30:00Z', summary: 'Molecule mol-storybook-rollout step "add-ci-gate" completed' },
+          { type: 'bead:complete', timestamp: '2026-03-20T09:35:00Z', summary: 'GT-050 "CI gate: Storybook build in cv-builder" done by ci-hardener' },
+          { type: 'bead:updated', timestamp: '2026-03-20T09:40:00Z', summary: 'GT-044 "SSE relay reconnect" status → blocked (depends on infra fix)' },
+          { type: 'agent:error', timestamp: '2026-03-20T09:45:00Z', summary: 'Agent deploy-agent error on rig blogengine — VITE_API_URL not set' },
+          { type: 'mail:sent', timestamp: '2026-03-20T09:46:00Z', summary: 'Mayor → deploy-agent: "Check .env.production for missing vars"' },
+          { type: 'bead:complete', timestamp: '2026-03-20T09:50:00Z', summary: 'GT-058 "SettingsModal.stories.tsx" marked done by scaffold-worker' },
+          { type: 'convoy:merge', timestamp: '2026-03-19T18:00:00Z', summary: 'Convoy "Sprint-6: Container/presenter decomposition" merged — 8/8 beads, 4 PRs shipped' },
+          { type: 'agent:spawn', timestamp: '2026-03-19T17:00:00Z', summary: 'Agent visual-tester spawned on rig cv-builder' },
         ],
       })
       return (
