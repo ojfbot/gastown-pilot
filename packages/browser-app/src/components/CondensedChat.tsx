@@ -1,47 +1,39 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { ChatShell, ChatMessage } from '@ojfbot/frame-ui-components';
+import '@ojfbot/frame-ui-components/styles/chat-shell';
+import type { ChatDisplayState } from '@ojfbot/frame-ui-components';
 
 interface CondensedChatProps {
   sidebarExpanded?: boolean;
 }
 
 /**
- * Condensed chat overlay — position:fixed, bottom-right.
- * Sidebar-aware right offset matches cv-builder/blogengine convention.
+ * Gas Town chat — wraps the shared ChatShell.
+ * Currently a placeholder; will connect to the Gas Town agent API.
  */
 export default function CondensedChat({ sidebarExpanded = false }: CondensedChatProps) {
-  const [isOpen, setIsOpen] = useState(false);
+  const [displayState, setDisplayState] = useState<ChatDisplayState>('collapsed');
+  const [draftInput, setDraftInput] = useState('');
 
-  const rightOffset = sidebarExpanded ? '320px' : '1rem';
+  const handleSend = (message: string) => {
+    // TODO: connect to Gas Town agent API
+    setDraftInput('');
+  };
 
   return (
-    <div
-      className="gastown-condensed-chat"
-      style={{
-        position: 'fixed',
-        bottom: '1rem',
-        right: rightOffset,
-        zIndex: 100,
-      }}
+    <ChatShell
+      displayState={displayState}
+      onDisplayStateChange={setDisplayState}
+      sidebarExpanded={sidebarExpanded}
+      title="Gas Town Agent"
+      draftInput={draftInput}
+      onDraftChange={setDraftInput}
+      onSend={handleSend}
+      placeholder="Ask the Gas Town agent..."
     >
-      {isOpen ? (
-        <div className="gastown-chat-panel">
-          <div className="gastown-chat-header">
-            <span>Gas Town Agent</span>
-            <button onClick={() => setIsOpen(false)} aria-label="Close chat">x</button>
-          </div>
-          <div className="gastown-chat-messages">
-            <p>Chat placeholder</p>
-          </div>
-        </div>
-      ) : (
-        <button
-          className="gastown-chat-trigger"
-          onClick={() => setIsOpen(true)}
-          aria-label="Open Gas Town chat"
-        >
-          Chat
-        </button>
-      )}
-    </div>
+      <ChatMessage role="assistant">
+        Gas Town agent is ready. Ask me about convoys, agents, or formulas.
+      </ChatMessage>
+    </ChatShell>
   );
 }

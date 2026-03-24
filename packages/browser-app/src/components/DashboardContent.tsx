@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { Tabs, TabList, Tab, TabPanels, TabPanel, Heading, Tooltip } from '@carbon/react';
 import { Menu, Close } from '@carbon/icons-react';
+import { DashboardLayout } from '@ojfbot/frame-ui-components';
+import '@ojfbot/frame-ui-components/styles/dashboard-layout';
 import { PANEL_TABS } from '@ojfbot/gastown-pilot-shared';
 import type { PanelTab } from '@ojfbot/gastown-pilot-shared';
 import { useAppDispatch, useAppSelector } from '../store/store';
@@ -14,7 +16,6 @@ import BeadsView from './panels/BeadsView';
 import FormulasView from './panels/FormulasView';
 import WastelandView from './panels/WastelandView';
 import GasTownSidePanel from './GasTownSidePanel';
-import './Dashboard.css';
 
 interface DashboardContentProps {
   shellMode: boolean;
@@ -38,7 +39,6 @@ export default function DashboardContent({ shellMode }: DashboardContentProps) {
   const activePanelTab = useAppSelector(s => s.threads.activePanelTab);
   const [activeTab, setActiveTab] = useState<PanelTab>('town');
 
-  // SCAFFOLD: read showWasteland from settings when wired to shell settingsSlice
   const showWasteland = true;
 
   const visibleTabs = showWasteland
@@ -47,7 +47,6 @@ export default function DashboardContent({ shellMode }: DashboardContentProps) {
 
   return (
     <>
-      {/* Right-rail side panel — Sessions + Chat tabs, no overlap with dashboard */}
       <GasTownSidePanel
         isExpanded={sidebarExpanded}
         onToggle={() => dispatch(setSidebarExpanded(!sidebarExpanded))}
@@ -55,19 +54,14 @@ export default function DashboardContent({ shellMode }: DashboardContentProps) {
         onTabChange={tab => dispatch(setPanelTab(tab))}
       />
 
-      {/* Main dashboard panel — right margin clears the side panel when open */}
-      <div
-        className={[
-          'gastown-dashboard-wrapper',
-          sidebarExpanded ? 'with-sidebar' : '',
-          shellMode ? 'shell-mode' : '',
-        ].filter(Boolean).join(' ')}
-        data-element="gastown-dashboard"
+      <DashboardLayout
+        shellMode={shellMode}
+        sidebarExpanded={sidebarExpanded}
       >
-        <div className="gastown-dashboard-header">
+        <DashboardLayout.Header>
           <Heading className="page-header">Gas Town Dashboard</Heading>
 
-          <div className="gastown-header-actions">
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
             <Tooltip
               align="bottom-right"
               label={sidebarExpanded ? 'Close panel' : 'Sessions & Chat'}
@@ -81,7 +75,7 @@ export default function DashboardContent({ shellMode }: DashboardContentProps) {
               </button>
             </Tooltip>
           </div>
-        </div>
+        </DashboardLayout.Header>
 
         <Tabs
           selectedIndex={visibleTabs.findIndex((t) => t.slug === activeTab)}
@@ -106,7 +100,7 @@ export default function DashboardContent({ shellMode }: DashboardContentProps) {
             ))}
           </TabPanels>
         </Tabs>
-      </div>
+      </DashboardLayout>
     </>
   );
 }
