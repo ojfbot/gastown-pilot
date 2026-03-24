@@ -8,10 +8,8 @@ jobs:
         node-version: ['20', '22']
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/checkout@v4
-        with:
-          repository: ojfbot/frame-ui-components
-          path: ../frame-ui-components
+      - name: Clone frame-ui-components (file: protocol dep)
+        run: git clone --depth 1 https://github.com/ojfbot/frame-ui-components.git ../frame-ui-components
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
