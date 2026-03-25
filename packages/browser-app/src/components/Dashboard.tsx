@@ -1,5 +1,6 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Provider } from 'react-redux';
+import { ErrorBoundary } from '@ojfbot/frame-ui-components';
 import { store } from '../store/store';
 import DashboardContent from './DashboardContent';
 
@@ -28,7 +29,9 @@ export default function Dashboard({ shellMode = false }: DashboardProps) {
   return (
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
-        <DashboardContent shellMode={shellMode} />
+        <ErrorBoundary appName="gastown-pilot" boundaryName="dashboard">
+          <DashboardContent shellMode={shellMode} />
+        </ErrorBoundary>
       </QueryClientProvider>
     </Provider>
   );
