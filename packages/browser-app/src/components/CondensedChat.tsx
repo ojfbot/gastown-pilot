@@ -1,6 +1,8 @@
 import { useState } from 'react';
-import { ChatShell, ChatMessage } from '@ojfbot/frame-ui-components';
+import { ChatShell, ChatMessage, MarkdownMessage, BadgeButton } from '@ojfbot/frame-ui-components';
 import '@ojfbot/frame-ui-components/styles/chat-shell';
+import '@ojfbot/frame-ui-components/styles/markdown-message';
+import '@ojfbot/frame-ui-components/styles/badge-button';
 import type { ChatDisplayState } from '@ojfbot/frame-ui-components';
 
 interface CondensedChatProps {
@@ -32,7 +34,7 @@ export default function CondensedChat({ sidebarExpanded = false }: CondensedChat
       placeholder="Ask the Gas Town agent..."
     >
       <ChatMessage role="assistant">
-        Gas Town agent is ready. Ask me about convoys, agents, or formulas.
+        <MarkdownMessage content="Gas Town agent is ready. Ask me about convoys, agents, or formulas." compact />
       </ChatMessage>
     </ChatShell>
   );

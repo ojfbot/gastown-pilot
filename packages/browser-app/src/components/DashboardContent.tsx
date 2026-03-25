@@ -16,6 +16,8 @@ import BeadsView from './panels/BeadsView';
 import FormulasView from './panels/FormulasView';
 import WastelandView from './panels/WastelandView';
 import GasTownSidePanel from './GasTownSidePanel';
+import ThreadSidebarConnected from './ThreadSidebarConnected';
+import CondensedChat from './CondensedChat';
 
 interface DashboardContentProps {
   shellMode: boolean;
@@ -101,6 +103,13 @@ export default function DashboardContent({ shellMode }: DashboardContentProps) {
           </TabPanels>
         </Tabs>
       </DashboardLayout>
+
+      <ThreadSidebarConnected
+        isExpanded={sidebarExpanded}
+        onToggle={() => dispatch(setSidebarExpanded(!sidebarExpanded))}
+      />
+
+      <CondensedChat sidebarExpanded={sidebarExpanded} />
     </>
   );
 }
