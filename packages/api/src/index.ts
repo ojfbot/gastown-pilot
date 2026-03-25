@@ -7,7 +7,11 @@ const log = getLogger('server');
 const app = express();
 const port = Number(process.env.PORT ?? 3018);
 
-app.use(cors({ origin: process.env.CORS_ORIGIN ?? 'http://localhost:3017' }));
+app.use(cors({
+  origin: process.env.CORS_ORIGIN
+    ? process.env.CORS_ORIGIN.split(',')
+    : ['http://localhost:3017', 'http://localhost:4000'],
+}));
 app.use(express.json());
 
 registerRoutes(app);
