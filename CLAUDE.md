@@ -76,3 +76,10 @@ This app is the observability/control surface for Gas Town's multi-agent coordin
 | Beads | BeadExplorer (master-detail) |
 | Formulas | FormulaLibrary, MoleculeDAG |
 | Wasteland | WantedBoard, CharacterSheet, Leaderboard, RecentActivity |
+
+## Deployment
+
+**NEVER deploy directly to production** via CLI (`vercel deploy --prod`, `vercel promote`, etc.).
+All production deployments go through the GitHub PR → CI → merge → automated deploy pipeline.
+The only exception is `workflow_dispatch` for manual CI triggers.
+Local Vercel CLI usage is restricted to preview deploys only.
