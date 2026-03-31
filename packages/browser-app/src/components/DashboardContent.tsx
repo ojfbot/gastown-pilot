@@ -1,7 +1,6 @@
 import { useState } from 'react';
-import { Tabs, TabList, Tab, TabPanels, TabPanel, Heading, Tooltip } from '@carbon/react';
-import { Menu, Close } from '@carbon/icons-react';
-import { DashboardLayout } from '@ojfbot/frame-ui-components';
+import { Tabs, TabList, Tab, TabPanels, TabPanel, Heading } from '@carbon/react';
+import { DashboardLayout, SidebarToggle } from '@ojfbot/frame-ui-components';
 import '@ojfbot/frame-ui-components/styles/dashboard-layout';
 import { PANEL_TABS } from '@ojfbot/gastown-pilot-shared';
 import type { PanelTab } from '@ojfbot/gastown-pilot-shared';
@@ -62,21 +61,7 @@ export default function DashboardContent({ shellMode }: DashboardContentProps) {
       >
         <DashboardLayout.Header>
           <Heading className="page-header">Gas Town Dashboard</Heading>
-
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            <Tooltip
-              align="bottom-right"
-              label={sidebarExpanded ? 'Close panel' : 'Sessions & Chat'}
-            >
-              <button
-                className="sidebar-toggle-btn"
-                onClick={() => dispatch(setSidebarExpanded(!sidebarExpanded))}
-                aria-label="Toggle sessions / chat panel"
-              >
-                {sidebarExpanded ? <Close size={20} /> : <Menu size={20} />}
-              </button>
-            </Tooltip>
-          </div>
+          <SidebarToggle isExpanded={sidebarExpanded} onToggle={() => dispatch(setSidebarExpanded(!sidebarExpanded))} />
         </DashboardLayout.Header>
 
         <Tabs
