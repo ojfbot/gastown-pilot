@@ -41,7 +41,9 @@ export interface ConvoyProgress {
   done: number;
   active: number;
   blocked: number;
-  status: 'active' | 'completed' | 'stalled';
+  status: 'forming' | 'active' | 'completed' | 'failed' | 'stalled';
+  pending?: number;
+  slots?: Array<{ beadId: string; agentId?: string; status: string }>;
 }
 
 /** TOML formula definition */

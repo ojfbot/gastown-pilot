@@ -114,22 +114,29 @@ export class DoltSqlClient {
   }
 
   async getConvoys(): Promise<ConvoyProgress[]> {
-    // Query convoy-type beads from Dolt
+    // Query convoy-type beads from Dolt — parse slots from labels.slots JSON
     try {
       const [rows] = await this.pool.execute(
-        "SELECT id, title, status, labels, refs FROM beads WHERE type = 'convoy' ORDER BY created_at DESC",
+        "SELECT id, title, status, labels FROM beads WHERE type = 'convoy' ORDER BY created_at DESC",
       );
       const convoys = (rows as BeadRow[]).map((r) => {
         const labels = typeof r.labels === 'string' ? JSON.parse(r.labels) : r.labels ?? {};
-        const refs = typeof r.refs === 'string' ? JSON.parse(r.refs) : r.refs ?? [];
+        const slotsRaw: Array<{ beadId: string; agentId?: string; status: string }> =
+          labels.slots ? JSON.parse(labels.slots) : [];
+        const done = slotsRaw.filter((s) => s.status === 'done').length;
+        const active = slotsRaw.filter((s) => s.status === 'active').length;
+        const failed = slotsRaw.filter((s) => s.status === 'failed').length;
+        const pending = slotsRaw.filter((s) => s.status === 'pending').length;
         return {
           id: r.id,
           title: r.title,
-          status: r.status as ConvoyProgress['status'],
-          slotCount: (refs as string[]).length,
-          completedSlots: 0,
-          slots: [],
-          ...labels,
+          status: (labels.convoy_status ?? r.status) as ConvoyProgress['status'],
+          total: slotsRaw.length,
+          done,
+          active,
+          blocked: failed,
+          pending,
+          slots: slotsRaw,
         } as ConvoyProgress;
       });
       if (convoys.length > 0) return convoys;
