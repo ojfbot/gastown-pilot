@@ -35,10 +35,14 @@ router.get('/api/rigs/:name/health', async (req, res) => {
 });
 
 /** GET /api/beads — query beads with filter params */
-router.get('/api/beads', async (_req, res) => {
-  // SCAFFOLD: stub — returns empty array
-  // TODO: wire to DoltSqlClient.queryBeads(filter)
-  res.json({ beads: [] });
+router.get('/api/beads', async (req, res) => {
+  const filter: { type?: string; status?: string; prefix?: string; actor?: string } = {};
+  if (req.query.type) filter.type = req.query.type as string;
+  if (req.query.status) filter.status = req.query.status as string;
+  if (req.query.prefix) filter.prefix = req.query.prefix as string;
+  if (req.query.actor) filter.actor = req.query.actor as string;
+  const beads = await dolt.queryBeads(filter);
+  res.json({ beads, count: beads.length });
 });
 
 /** GET /api/formulas — formula library */
