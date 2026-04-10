@@ -10,17 +10,18 @@
   "dependencies": {
     "@ojfbot/gastown-pilot-agent-graph": "workspace:*",
     "@ojfbot/gastown-pilot-shared": "workspace:*",
-    "express": "^4.21.0",
-    "jsonwebtoken": "^9.0.0",
     "better-sqlite3": "^11.0.0",
     "cors": "^2.8.5",
+    "express": "^4.21.0",
+    "jsonwebtoken": "^9.0.0",
+    "mysql2": "^3.22.0",
     "zod": "^3.23.0"
   },
   "devDependencies": {
-    "@types/express": "^5.0.0",
-    "@types/jsonwebtoken": "^9.0.0",
     "@types/better-sqlite3": "^7.6.0",
     "@types/cors": "^2.8.0",
+    "@types/express": "^5.0.0",
+    "@types/jsonwebtoken": "^9.0.0",
     "tsx": "^4.0.0",
     "typescript": "^5.7.0"
   }
