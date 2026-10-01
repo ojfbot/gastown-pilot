@@ -15,5 +15,6 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm build
+      - run: pnpm check:no-loopback
       - run: pnpm test
       - run: pnpm --filter @ojfbot/gastown-pilot-browser-app build-storybook

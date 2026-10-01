@@ -4,6 +4,7 @@
   "packageManager": "pnpm@9.15.4",
   "scripts": {
     "build": "pnpm -r build",
+    "check:no-loopback": "sh scripts/check-no-loopback.sh",
     "dev:all": "concurrently -n api,app -c blue,green \"pnpm --filter @ojfbot/gastown-pilot-api dev\" \"pnpm --filter @ojfbot/gastown-pilot-browser-app dev\"",
     "test": "vitest run",
     "test:watch": "vitest",

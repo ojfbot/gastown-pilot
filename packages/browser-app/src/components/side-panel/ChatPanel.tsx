@@ -9,7 +9,7 @@ import {
   setStreamingContent,
 } from '../../store/chatSlice'
 
-const API_BASE = import.meta.env.VITE_API_URL ?? 'http://localhost:3018'
+import { API_BASE } from '../../hooks/api'
 
 export function ChatPanel() {
   const dispatch = useAppDispatch()
@@ -38,6 +38,7 @@ export function ChatPanel() {
     const history = messages.slice(-10).map(m => ({ role: m.role, content: m.content }))
 
     try {
+      if (!API_BASE) throw new Error('API not configured')
       const res = await fetch(`${API_BASE}/api/commands`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
