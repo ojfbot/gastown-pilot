@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { MOCK_BEADS } from './mockData';
 
-const API_BASE = import.meta.env.VITE_API_URL ?? 'http://localhost:3018';
+import { fetchOrMock } from './api';
 
 interface BeadFilter {
   type?: string;
@@ -18,14 +18,6 @@ export function useBeads(filter: BeadFilter = {}) {
 
   return useQuery({
     queryKey: ['gastown', 'beads', filter],
-    queryFn: async () => {
-      try {
-        const res = await fetch(`${API_BASE}/api/beads?${params}`);
-        if (!res.ok) return MOCK_BEADS;
-        return await res.json() as { beads: unknown[] };
-      } catch {
-        return MOCK_BEADS;
-      }
-    },
+    queryFn: () => fetchOrMock<{ beads: unknown[] }>(`/api/beads?${params}`, MOCK_BEADS),
   });
 }
