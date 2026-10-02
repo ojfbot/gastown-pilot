@@ -45,7 +45,7 @@ browser-app (React, Carbon, React Query)
 
 ### Module Federation
 
-Exposes `./Dashboard` and `./Settings` for shell integration. Shell loads at `http://localhost:3017/assets/remoteEntry.js`.
+Exposes `./Dashboard` and `./Settings` for shell integration. The remote entry URL is set via a build-time environment variable (never a localhost fallback).
 
 `cssInjectedByJs` must come BEFORE `federation` in vite.config.ts plugins. `@carbon/react` must be in the shared singleton map.
 
